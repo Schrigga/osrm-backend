@@ -730,13 +730,18 @@ set(UTIL_LIBRARIES
     ${ZLIB_LIBRARY})
 
 # Libraries
-target_link_libraries(osrm ${ENGINE_LIBRARIES})
-target_link_libraries(osrm_update ${UPDATER_LIBRARIES})
-target_link_libraries(osrm_contract ${CONTRACTOR_LIBRARIES} osrm_update osrm_store)
-target_link_libraries(osrm_extract osrm_guidance ${EXTRACTOR_LIBRARIES})
-target_link_libraries(osrm_partition ${PARTITIONER_LIBRARIES})
-target_link_libraries(osrm_customize ${CUSTOMIZER_LIBRARIES} osrm_update osrm_store)
-target_link_libraries(osrm_store ${STORAGE_LIBRARIES})
+if(BUILD_LIB_OSRM)
+  target_link_libraries(osrm ${ENGINE_LIBRARIES})
+endif(BUILD_LIB_OSRM)
+
+if(BUILD_OTHER_OSRM_LIBS5)
+  target_link_libraries(osrm_update ${UPDATER_LIBRARIES})
+  target_link_libraries(osrm_contract ${CONTRACTOR_LIBRARIES} osrm_update osrm_store)
+  target_link_libraries(osrm_extract osrm_guidance ${EXTRACTOR_LIBRARIES})
+  target_link_libraries(osrm_partition ${PARTITIONER_LIBRARIES})
+  target_link_libraries(osrm_customize ${CUSTOMIZER_LIBRARIES} osrm_update osrm_store)
+  target_link_libraries(osrm_store ${STORAGE_LIBRARIES})
+endif(BUILD_OTHER_OSRM_LIBS5)
 
 # BUILD_COMPONENTS
 add_executable(osrm-components src/tools/components.cpp $<TARGET_OBJECTS:MICROTAR> $<TARGET_OBJECTS:UTIL>)
